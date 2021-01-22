@@ -6,18 +6,26 @@ class EchoServer
 {
     public static void main(String[] args)
     {
+	//hardcoded port number on an unused port
         int portNumber = 4444;
 
+	//try opening a ServerSocket in a try-with-resources
         try
         (
             ServerSocket server = new ServerSocket(portNumber);
         )
             {
+		//keep looping to accept new clients constantly
                 while (true)
                 {
+		    //accept a client socket
                     Socket client = server.accept();
                     System.out.println("New Connection");
+
+		    //create an EchoThread to start handling the client socket
                     EchoThread handler = new EchoThread(client);
+
+		    //start running the EchoThread to deal with the Socket so the loop can keep accepting
                     new Thread(handler).start();
                 }
             } catch(IOException err)
