@@ -1,18 +1,22 @@
 package chatapp;
 
 import java.io.IOException;
-import java.io.Serializable;
+import java.net.ServerSocket;
 
-public class Receiver extends Thread implements Serializable
+public class Receiver extends Thread
 {
-    private String ip, name;
-    private int port;
+    static ServerSocket receiverSocket = null;
 
-    public Receiver( ChatNode node )
+    public Receiver( NodeInfo myNode )
     {
-        ip = this.ip;
-        name = this.name;
-        port = this.port;
+        try
+        {
+            receiverSocket = new ServerSocket( myNode.getPort() );
+        }
+        catch ( IOException err )
+        {
+            err.printStackTrace();
+        }
     }
 
     @Override
@@ -22,8 +26,10 @@ public class Receiver extends Thread implements Serializable
         {
             try
             {
-                (new ReceiverWorker(receiverSocket.accept())).start();
-            } catch (IOException err) {
+                ( new ReceiverWorker( receiverSocket.accept() ) ).start();
+            }
+            catch ( IOException err )
+            {
                 err.printStackTrace();
             }
         }
