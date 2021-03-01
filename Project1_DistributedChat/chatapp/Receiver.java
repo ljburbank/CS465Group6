@@ -9,13 +9,16 @@ public class Receiver extends Thread
 {
     static ServerSocket receiverSocket = null;
 
+    ChatNode thisNode;
     // init constructor
     // allows recieverSocket to be set to a new serverSocket
-    public Receiver( NodeInfo myNode )
+    public Receiver( ChatNode thisNode )
+
     {
+        this.thisNode = thisNode;
         try
         {
-            receiverSocket = new ServerSocket( myNode.getPort() );
+            receiverSocket = new ServerSocket( thisNode.myInfo.getPort() );
         }
         catch ( IOException err )
         {
@@ -31,7 +34,7 @@ public class Receiver extends Thread
         {
             try
             {
-                ( new ReceiverWorker( receiverSocket.accept() ) ).start();
+                ( new ReceiverWorker( receiverSocket.accept(), thisNode ) ).start();
             }
             catch ( IOException err )
             {
