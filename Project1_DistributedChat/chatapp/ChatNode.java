@@ -3,17 +3,29 @@ package chatapp;
 import java.io.Serializable;
 import java.util.LinkedList;
 
+
+/* 
+   ChatNode class 
+   handles chat node object
+   creates chat thread and calls in maib
+*/
 public class ChatNode implements Serializable
   {
 
-
+    /*
+      Nested class containing 
+      nodeinfo.
+    */
     public class NodeInfo implements Serializable
       {
+        // global variables for NodeInfo
         private static final long serialVersionUID = 2L;
         String IP;
         String Name;
         int Port;
-
+        
+        // Initalization constructor for NodeInfo
+        // allows for IP,name and port to be set to specified parameter
         public NodeInfo(String IP, String inName, int inPort)
           {
             this.IP = IP;
@@ -31,14 +43,19 @@ public class ChatNode implements Serializable
              return IP + "," + Name + "," + String.valueOf( Port );
             }
       }
-
+  
+    // Global variables for ChatNode
     static Receiver receiver = null;
     static Sender sender = null;
+
 
     public NodeInfo myInfo;
     public LinkedList<NodeInfo> participantList;
     private static final long serialVersionUID = 3L;
 
+
+     // initalization constructor
+     // allows for IP, Name and Port to be set
     public ChatNode(String inIp, String inName, int inPort)
       {
         myInfo = new NodeInfo(inIp, inName, inPort);
@@ -46,6 +63,7 @@ public class ChatNode implements Serializable
         participantList.add( this.myInfo );
      
       }
+
     
     public void addParticipant( NodeInfo newNode )
         {
@@ -82,6 +100,9 @@ public class ChatNode implements Serializable
          
         }
     
+
+
+    // run reciever and sender threads
     public void run()
       {
         System.out.println(",,,,,,,,,,,,,,,,");
@@ -98,6 +119,8 @@ public class ChatNode implements Serializable
         (sender = new Sender( this )).start();
       }
 
+     // main method creates new chat node 
+     // by calling in the chatNode constructor
     public static void main(String[] args)
       {
         (new ChatNode(args[0], args[1], Integer.parseInt(args[2]))).run();

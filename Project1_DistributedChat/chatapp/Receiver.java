@@ -3,12 +3,17 @@ package chatapp;
 import java.io.IOException;
 import java.net.ServerSocket;
 
+
+// class declaration, Reciever has its own thread.
 public class Receiver extends Thread
 {
     static ServerSocket receiverSocket = null;
+
     ChatNode thisNode;
-    
+    // init constructor
+    // allows recieverSocket to be set to a new serverSocket
     public Receiver( ChatNode thisNode )
+
     {
         this.thisNode = thisNode;
         try
@@ -21,6 +26,7 @@ public class Receiver extends Thread
         }
     }
 
+    // thread runs
     @Override
     public void run()
     {
