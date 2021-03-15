@@ -1,13 +1,23 @@
 package chatapp;
+import java.io.Serializable;
+import java.util.LinkedList;
 
-public class UserMessage
+import chatapp.ChatNode.NodeInfo;
+
+public class UserMessage implements Serializable
 {
-    public NodeInfo senderInfo;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    public ChatNode.NodeInfo senderInfo;
     public String message;
+    public LinkedList<NodeInfo> participantList;
 
-    public UserMessage( NodeInfo sender, String messageToSend )
+    public UserMessage( ChatNode.NodeInfo sender, String messageToSend )
     {
         senderInfo = sender;
         message = messageToSend;
+        participantList = null;
     }
 }
