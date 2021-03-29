@@ -20,7 +20,8 @@ public class TransactionServer
 
     public TransactionServer()
     {
-        lockManager = new LockManager();
+        Boolean useLocks = false;  //determines whether race conditions are controlled by locks; true for use locks
+        lockManager = new LockManager(useLocks);
         accountManager = new AccountManager(10, 10);
         transactionManager = new TransactionManager();
     }
