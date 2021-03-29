@@ -1,6 +1,7 @@
 package transaction.comm;
+import java.io.Serializable;
 
-public class Message
+public class Message implements Serializable
 {
     private String type;
     private Object[] content;

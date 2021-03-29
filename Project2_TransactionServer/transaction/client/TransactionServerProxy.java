@@ -26,6 +26,7 @@ public class TransactionServerProxy
         {
             socket = new Socket(serverIP, serverPort);
             out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
 
             System.out.println("Connected");
         }
@@ -52,6 +53,7 @@ public class TransactionServerProxy
         catch (Exception err)
         {
             System.out.println("Could not send message object.");
+            err.printStackTrace();
         }
     }
 

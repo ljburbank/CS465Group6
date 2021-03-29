@@ -82,6 +82,7 @@ public class TransactionManager
                   // OPEN TRANSACTION
                   // -----------------------------------------------------------
                   case "OPEN":
+System.out.println("DEGUG: TRANSACTIONMANAGER: OPEN CASE ENTERED");
                     synchronized (transactions)
                       {
                         transaction = new Transaction(transactionCounter++);

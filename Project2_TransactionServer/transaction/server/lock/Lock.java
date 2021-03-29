@@ -3,6 +3,7 @@ package transaction.server.lock;
 
 import java.util.Vector;
 import transaction.server.transaction.Transaction;
+import transaction.server.account.Account;
 
 public class Lock
 {
@@ -36,13 +37,13 @@ public class Lock
     
     
    //Fields 
-   private Object account; //object to be protected by lock; accounts in this case
+   private Account account; //object to be protected by lock; accounts in this case
    public Vector holders; //tids of those currently holding this lock
    private Vector requestors;
    public LockType lockType; //either read or write
  
    //Lock constructor
-   public Lock(Object account)
+   public Lock(Account account)
    {
        this.account = account;
    }
@@ -99,6 +100,11 @@ public class Lock
    //called by lock manager to acquire a lock
    public synchronized void acquire(Transaction tran, String lockType )
    {
+       
+     //log access attempt
+       System.out.println("Transaction #" + tran.tranID + "[Lock.acquire]                 |"
+                           + " try " + lockType + "on account #" + account.getId() );
+       
     //while there is a conflict
         while( isConflicting( lockType, tran.tranID ) )
         {

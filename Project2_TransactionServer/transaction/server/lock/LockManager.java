@@ -1,20 +1,24 @@
 package transaction.server.lock;
 
 import java.util.Hashtable;
+
+import transaction.server.account.Account;
 import transaction.server.lock.Lock.LockType;
 import transaction.server.transaction.Transaction;
 
 public class LockManager {
-    private Hashtable locks;   //referensable table that maps accounts to locks
+    private Hashtable locks;   //referencable table that maps accounts to locks
                                //note: accounts are the keys, locks are values.
     
     
     
     //lock function obtains access to a given account
-    public void lock(Object account, Transaction tran, String lockType )
+    public void lock(Account account, Transaction tran, String lockType )
     {
         //initialize variables
         Lock foundLock;
+        
+        
         
         //synchronized look up section to preserve lock integrity
         synchronized(this)
