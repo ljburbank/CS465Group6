@@ -51,7 +51,8 @@ public class TransactionManager
 
             catch (IOException e)
               {
-                System.out.println("[TransactionManagerWorker.un] Failed to "
+                System.out.println("Transaction #" + transaction.tranID
+                    + "[TransactionManagerWorker.un] Failed to "
                     + "open object streams");
                 e.printStackTrace();
                 System.exit(1);
@@ -71,8 +72,9 @@ public class TransactionManager
                   }
                 catch (IOException | ClassNotFoundException e)
                   {
-                    System.out.println("[TransactionManagerWorker.run] Message "
-                        + "could not be read from object stream.");
+                    System.out.println("Transaction #" + transaction.tranID
+                            + "[TransactionManagerWorker.run] Message "
+                            + "could not be read from object stream.");
                     System.exit(1);
                   }
 
@@ -82,11 +84,13 @@ public class TransactionManager
                   // OPEN TRANSACTION
                   // -----------------------------------------------------------
                   case "OPEN":
-System.out.println("DEGUG: TRANSACTIONMANAGER: OPEN CASE ENTERED");
                     synchronized (transactions)
                       {
                         transaction = new Transaction(transactionCounter++);
                         transactions.add(transaction);
+                        System.out.println("Transaction #" + transaction.tranID 
+                                + "[TransactionManagerWorker.run]"
+                                + " OPEN TRANSACTION #" + transaction.tranID);
                       }
 
                     try
@@ -96,7 +100,8 @@ System.out.println("DEGUG: TRANSACTIONMANAGER: OPEN CASE ENTERED");
 
                     catch (IOException e)
                       {
-                        System.out.println("[TransactionManagerWorker.run] "
+                        System.out.println("Transaction #" + transaction.tranID
+                            +"[TransactionManagerWorker.run] "
                             + "OPEN_TRANSACTION - error when writing transID");
                       }
 
@@ -114,6 +119,9 @@ System.out.println("DEGUG: TRANSACTIONMANAGER: OPEN CASE ENTERED");
 
                     try
                       {
+                        System.out.println("Transaction #" + transaction.tranID 
+                                + "[TransactionManagerWorker.run]"
+                                + " CLOSE TRANSACTION #" + transaction.tranID);
                         readFromNet.close();
                         writeToNet.close();
                         client.close();
@@ -122,7 +130,8 @@ System.out.println("DEGUG: TRANSACTIONMANAGER: OPEN CASE ENTERED");
 
                     catch (IOException e)
                       {
-                        System.out.println("[TransactionManagerWorker.run] "
+                        System.out.println("Transaction #" + transaction.tranID
+                            + "[TransactionManagerWorker.run] "
                             + "CLOSE_TRANSACTION - error when closing connection"
                             + " to client");
                       }
@@ -159,7 +168,7 @@ System.out.println("DEGUG: TRANSACTIONMANAGER: OPEN CASE ENTERED");
 
                     catch (IOException e)
                       {
-                        System.out.println(
+                        System.out.println("Transaction #" + transaction.tranID + 
                             "[TransactionManagerWorker.run] WRITE_REQUEST - "
                                 + "error when writing to object stream");
                       }
@@ -175,7 +184,8 @@ System.out.println("DEGUG: TRANSACTIONMANAGER: OPEN CASE ENTERED");
                   case "READ":
                     Object[] readContent = (Object[]) message.getContent();
                     accountNumber = ((Integer) readContent[0]);
-                    transaction.log("[TransactionManagerWorker.run] "
+                    transaction.log("Transaction #" + transaction.tranID + 
+                            "[TransactionManagerWorker.run] "
                         + "READ_REQUEST >>>>>>>>>>>>> account #"
                         + accountNumber);
 
@@ -189,12 +199,13 @@ System.out.println("DEGUG: TRANSACTIONMANAGER: OPEN CASE ENTERED");
 
                     catch (IOException e)
                       {
-                        System.out.println(
+                        System.out.println("Transaction #" + transaction.tranID + 
                             "[TransactionManagerWorker.run] WRITE_REQUEST - "
                                 + "error when writing to object stream");
                       }
 
-                    transaction.log("[TransactionManagerWorker.run] "
+                    transaction.log("Transaction #" + transaction.tranID + 
+                            "[TransactionManagerWorker.run] "
                         + "WRITE_REQUEST <<<<<<<<<<<<< account #"
                         + accountNumber + "new balance $" + balance);
 
@@ -203,7 +214,8 @@ System.out.println("DEGUG: TRANSACTIONMANAGER: OPEN CASE ENTERED");
                   // DEFAULT
                   // -----------------------------------------------------------
                   default:
-                    System.out.println("[TransactionManagerWorker.run] Warning:"
+                    System.out.println("Transaction #" + transaction.tranID + 
+                            "[TransactionManagerWorker.run] Warning:"
                         + " Message type not implemented");
 
                   }

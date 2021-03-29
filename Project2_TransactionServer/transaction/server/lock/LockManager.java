@@ -77,16 +77,15 @@ public class LockManager {
         {
           //get lock at index
           workingLock = workingLocks[index];
-System.out.println("DEBUG: LOCKMANAGER: UNLOCK: FOR LOOP ITERATION");
         
         //skip empty indices in lock array
         if(workingLock == null )
           {
            continue;
           }
-          
+
           //if lock held by transaction
-          if(workingLock.holders.contains( tran ))
+          if(workingLock.holders.contains( tran.tranID ))
           {
               //release the lock  
               workingLock.release(tran.tranID);

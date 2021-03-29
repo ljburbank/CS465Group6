@@ -13,7 +13,7 @@ public class Transaction
         tranID = inID;
         locks = new Lock[2];
 
-        tranLog = "Transaction " + Integer.toString(inID) + " Log\n";
+        tranLog = "\nTransaction " + Integer.toString(inID) + " Log\n";
         tranLog += "=================\n";
     }
 
