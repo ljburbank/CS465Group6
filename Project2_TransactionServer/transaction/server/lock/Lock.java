@@ -38,16 +38,16 @@ public class Lock
     
    //Fields 
    private Account account; //object to be protected by lock; accounts in this case
-   public Vector holders; //tids of those currently holding this lock
-   private Vector requestors;
+   public Vector<Object> holders; //tids of those currently holding this lock
+   private Vector<Object> requestors;
    public LockType lockType; //either read or write
  
    //Lock constructor
    public Lock(Account account)
    {
        this.account = account;
-       this.holders = new Vector();
-       this.requestors = new Vector();
+       this.holders = new Vector<Object>();
+       this.requestors = new Vector<Object>();
        this.lockType = new LockType("NO_LOCK");
    }
    

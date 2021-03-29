@@ -43,11 +43,13 @@ public class TransactionServer
         // Begin the server loop
         while( true )
         {
-            System.out.println("Listening for connection");
+            System.out.println("[TransactionServer]Listening for connection");
             
             try
             {
                 Socket acceptedSocket = receiverSocket.accept();
+                System.out.println("[TransactionServer]Connection accepted from "
+                                    + acceptedSocket.getRemoteSocketAddress());
                 TransactionManager.runTransaction( acceptedSocket );
             }
             catch (Exception err)

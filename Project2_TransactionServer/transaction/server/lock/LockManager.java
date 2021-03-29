@@ -3,11 +3,10 @@ package transaction.server.lock;
 import java.util.Hashtable;
 
 import transaction.server.account.Account;
-import transaction.server.lock.Lock.LockType;
 import transaction.server.transaction.Transaction;
 
 public class LockManager {
-    private Hashtable<Account, Lock> locks;   //referencable table that maps accounts to locks
+    private Hashtable<Account, Lock> locks;   //referenceable table that maps accounts to locks
                                //note: accounts are the keys, locks are values.
     private Boolean useLocks;
     
