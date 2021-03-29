@@ -10,7 +10,7 @@ public class Lock
     //internal class keeps track of lock's type (read or write )
     public class LockType
         {
-            private String lockType; //locktype int 0=read 1=write
+            private String lockType;
             
             //constructor initializes locktype
             public LockType( String lockType )
@@ -46,6 +46,9 @@ public class Lock
    public Lock(Account account)
    {
        this.account = account;
+       this.holders = new Vector();
+       this.requestors = new Vector();
+       this.lockType = new LockType("NO_LOCK");
    }
    
    //MANAGEMENT FUNCTIONS FOR holders FIELD
@@ -92,6 +95,8 @@ public class Lock
        }
        
        //else conflict exists, return false
+       System.out.println("Transaction #" + transaction + "[Lock.acquire]                 |"
+               + " CONFLICT on account #" + account.getId() );
        return true;
            
    }
@@ -103,7 +108,7 @@ public class Lock
        
      //log access attempt
        System.out.println("Transaction #" + tran.tranID + "[Lock.acquire]                 |"
-                           + " try " + lockType + "on account #" + account.getId() );
+                           + " try " + lockType + " on account #" + account.getId() );
        
     //while there is a conflict
         while( isConflicting( lockType, tran.tranID ) )
@@ -127,9 +132,15 @@ public class Lock
     {
        //add holder
        holders.add((Object) tran.tranID );
+       
+       //give the transaction the lock token
+       tran.takeLock(this);
         
        //set lock type to requested lock type 
        this.lockType.lockType = lockType;
+       
+       System.out.println("Transaction #" + tran.tranID + "[Lock.acquire]                 |"
+               + " no holders on account #" + account.getId() + " NO CONFLICT");
     }
        
     //else if there are other holders (must be read due to conflict checking)
@@ -141,6 +152,13 @@ public class Lock
             //add this transaction as a holder
             //NOTE: locktype already set in this case
             holders.add((Object) tran.tranID );
+            
+            //give the transaction the lock token
+            tran.takeLock(this);
+            
+            System.out.println("Transaction #" + tran.tranID + "[Lock.acquire]                 |"
+                    + " current lock type is " + this.lockType
+                    + " on account #" + account.getId() + " NO CONFLICT");
         }
     }
     
@@ -150,6 +168,9 @@ public class Lock
     {
         //promote locktype
         this.lockType.promote();
+        System.out.println("Transaction #" + tran.tranID + "[Lock.acquire]                 |"
+                + " current lock type is " + this.lockType.lockType
+                + " on account #" + account.getId() + " promoted to " + lockType);
     }
 }
    
@@ -160,7 +181,7 @@ public class Lock
        holders.removeElement((Object) transactionId);
        
        //set locktype to none
-       this.lockType.lockType = "";
+       this.lockType.lockType = "NO_LOCK";
        
        //notify requestors
        notifyAll();

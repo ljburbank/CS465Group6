@@ -51,6 +51,7 @@ public class AccountManager
       // get the account 
       Account account = getAccount(accountNumber);
       
+      
       // set write lock
       (TransactionServer.lockManager).lock(account, transaction, "WRITE_LOCK");
       

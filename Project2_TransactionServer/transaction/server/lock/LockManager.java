@@ -7,10 +7,13 @@ import transaction.server.lock.Lock.LockType;
 import transaction.server.transaction.Transaction;
 
 public class LockManager {
-    private Hashtable locks;   //referencable table that maps accounts to locks
+    private Hashtable<Account, Lock> locks;   //referencable table that maps accounts to locks
                                //note: accounts are the keys, locks are values.
     
-    
+    public LockManager()
+    {
+        this.locks = new Hashtable<Account, Lock>();
+    }
     
     //lock function obtains access to a given account
     public void lock(Account account, Transaction tran, String lockType )
@@ -60,6 +63,13 @@ public class LockManager {
         {
           //get lock at index
           workingLock = workingLocks[index];
+System.out.println("DEBUG: LOCKMANAGER: UNLOCK: FOR LOOP ITERATION");
+        
+        //skip empty indices in lock array
+        if(workingLock == null )
+          {
+           continue;
+          }
           
           //if lock held by transaction
           if(workingLock.holders.contains( tran ))
